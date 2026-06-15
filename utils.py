@@ -108,7 +108,7 @@ def agregar_pais(ARCHIVO_CSV, nuevo_pais):
         print (f"Error inesperado: {e}")
 
 #opcion 2
-def actualizar_datos(ARCHIVO_CSV, nuevos_datos):
+def actualizar_datos(ARCHIVO_CSV, datos_actualizados):
 
     try:
         print("\n----- MODIFICAR PAIS ----- \n")
@@ -120,7 +120,7 @@ def actualizar_datos(ARCHIVO_CSV, nuevos_datos):
         columnas = ['nombre', 'poblacion', 'superficie', 'continente']
         #creamo una bandera para saber si encontramos el pais
         encontrado = False
-
+        
         #Abrimos el archivo en modo lectura
         with open(ARCHIVO_CSV, mode='r', encoding='utf-8') as archivo:
             lector_dict = csv.DictReader(archivo)
@@ -176,3 +176,42 @@ def actualizar_datos(ARCHIVO_CSV, nuevos_datos):
     #Para cualquier otro error lo imprimimos por pantalla
     except Exception as e:
         print (f"Error inesperado: {e}")
+
+#opcion 3
+def buscar_pais (ARCHIVO_CSV, pais_a_buscar):
+    try:
+        print ("\n------ BUSCAR PAIS -----\n")
+        #solicitamos el nombre del pais a buscar
+        pais_a_buscar = pedir_texto ("Ingrese el nombre del pais que desea buscar").strip().lower()
+        #creamo una bandera para saber si encontramos el pais
+        encontrado = False
+        
+        #Abrimos el archivo en modo lectura
+        with open(ARCHIVO_CSV, mode='r', encoding='utf-8') as archivo:
+            lector_dict = csv.DictReader(archivo)
+            #recorremos todo el archivo
+            for fila in lector_dict:
+                #comparamos el nombre de la fila con el nombre ingresado
+                if fila ['nombre'].lower().strip() == pais_a_buscar:
+                    #cambiamos la bandera
+                    encontrado = True
+                    #mostramos los datos
+                    print (f"Pais {pais_a_buscar.title()} encontrado:")
+                    print ("Datos almacenados en la base de datos")
+                    print (f"Población: {fila['poblacion']} | Superficie: {fila['superficie']} | Continente: {fila['continente']}")
+        
+        #revisamos si se encontro el pais
+        if not encontrado:
+            print (f"\nEl pais {pais_a_buscar.title()} no se encuentra en la base de datos. si desea ingresarlo utilice la opcion 1.\n")
+            return False
+        
+    #se crea la validacion por si no se encuentra el archivo CSV
+    except FileNotFoundError:
+        print (f"El archivo {ARCHIVO_CSV} no se encuentro en la carpeta")
+    #verificamos que se pueda trabajar con el csv
+    except PermissionError:
+        print ("Error. Asegurese que el CSV no se encuentre abierto por otro programa.")
+    #Para cualquier otro error lo imprimimos por pantalla
+    except Exception as e:
+        print (f"Error inesperado: {e}")
+
