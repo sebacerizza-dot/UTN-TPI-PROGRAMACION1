@@ -53,6 +53,13 @@ El sistema fue diseñado bajo el principio de programación defensiva para mitig
 *   **Manejo de Excepciones del Entorno:** Control explícito de errores de E/S, tales como la ausencia física del archivo (`FileNotFoundError`) o bloqueos por derechos de escritura (`PermissionError`) comunes cuando el archivo CSV se encuentra abierto en un programa externo como Excel.
 
 ---
+## Librerías
+La aplicación no requiere la instalación de librerías de terceros. El sistema fue desarrollado utilizando puramente las herramientas nativas de la Librería Estándar de Python:
+
+*   **csv: Para la lectura y escritura estructurada mediante diccionarios (DictReader y DictWriter).**
+*   **os: Para la verificación de existencia física de archivos en el disco de manera multiplataforma.**
+
+---
 
 ## Instrucciones de Uso
 
