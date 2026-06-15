@@ -28,7 +28,7 @@ def pedir_texto(mensaje):
         print(" ERROR. No puede quedar vacío.")
 
 #Opcion 1:
-def agregar_pais(ARCHIVO_CSV, nuevo_pais):
+def agregar_pais(ARCHIVO_CSV):
     try:
         #solicitamos el pais a agregar
         print ("\n----- AGREGAR PAIS -----\n")
@@ -63,7 +63,7 @@ def agregar_pais(ARCHIVO_CSV, nuevo_pais):
                 print("4. Oceanía")
                 print("5. África")
                 #solicitamos el numero de la opcion deseada
-                opcion = pedir_int("\nElija la opcion deseada (1-5): ").strip()
+                opcion = pedir_int("\nElija la opcion deseada (1-5): ")
 
                 #Validamos la opcion
                 if opcion in [1, 2, 3, 4, 5]:
@@ -84,7 +84,7 @@ def agregar_pais(ARCHIVO_CSV, nuevo_pais):
             with open(ARCHIVO_CSV, mode='a', newline='', encoding='utf-8') as archivo:
                 # Definimos el orden exacto de las columnas de tu CSV
                 colmunas = ['nombre', 'poblacion', 'superficie', 'continente']
-                escritor_dict = csv.DictWriter( ARCHIVO_CSV, fieldnames=colmunas)
+                escritor_dict = csv.DictWriter( archivo, fieldnames=colmunas)
                 
                 # Si el archivo se está creando de cero, escribimos los nombres de las columnas
                 if not archivo_existe:
@@ -108,7 +108,7 @@ def agregar_pais(ARCHIVO_CSV, nuevo_pais):
         print (f"Error inesperado: {e}")
 
 #opcion 2
-def actualizar_datos(ARCHIVO_CSV, datos_actualizados):
+def actualizar_datos(ARCHIVO_CSV):
 
     try:
         print("\n----- MODIFICAR PAIS ----- \n")
@@ -178,11 +178,11 @@ def actualizar_datos(ARCHIVO_CSV, datos_actualizados):
         print (f"Error inesperado: {e}")
 
 #opcion 3
-def buscar_pais (ARCHIVO_CSV, pais_a_buscar):
+def buscar_pais (ARCHIVO_CSV):
     try:
         print ("\n------ BUSCAR PAIS -----\n")
         #solicitamos el nombre del pais a buscar
-        pais_a_buscar = pedir_texto ("Ingrese el nombre del pais que desea buscar").strip().lower()
+        pais_a_buscar = pedir_texto ("Ingrese el nombre del pais que desea buscar: ").strip().lower()
         #creamo una bandera para saber si encontramos el pais
         encontrado = False
         
@@ -241,7 +241,7 @@ Seleccione la opcion que desee utiliza:
                 print("4. Oceanía")
                 print("5. África")
                 #solicitamos el numero de la opcion deseada
-                opcion = pedir_int("\nElija la opcion deseada (1-5): ").strip()
+                opcion = pedir_int("\nElija la opcion deseada (1-5): ")
 
                 #Validamos la opcion
                 if opcion in [1, 2, 3, 4, 5]:
@@ -292,8 +292,9 @@ Seleccione la opcion que desee utiliza:
                 lector_dict = csv.DictReader(archivo)
                 #recorremos todo el archivo
                 for fila in lector_dict:
+                    poblacion_fila = int (fila['poblacion'])
                     #comparamos el valor de la fila con los valores ingresados
-                    if fila ['pobacion'] <= poblacion_max and fila ['pobacion'] >= poblacion_min:
+                    if poblacion_fila <= poblacion_max and poblacion_fila >= poblacion_min:
                         #cambiamos la bandera
                         dentro_rango = True
                         #imprimimos los datos
@@ -332,8 +333,9 @@ Seleccione la opcion que desee utiliza:
                 lector_dict = csv.DictReader(archivo)
                 #recorremos todo el archivo
                 for fila in lector_dict:
+                    superficie_fila = int (fila['superficie'])
                     #comparamos el valor de la fila con los valores ingresados
-                    if fila ['pobacion'] <= superficie_max and fila ['pobacion'] >= superficie_min:
+                    if superficie_fila <= superficie_max and superficie_fila >= superficie_min:
                         #cambiamos la bandera
                         dentro_rango = True
                         #imprimimos los datos
@@ -354,3 +356,13 @@ Seleccione la opcion que desee utiliza:
         #Para cualquier otro error lo imprimimos por pantalla
         except Exception as e:
             print (f"Error inesperado: {e}")
+    else:
+        print ("Error. Debe ingresar un valor en el rango indicado (1-3).")
+
+
+        
+def ordenar_paises():
+    pass
+
+def mostrar_estadisticas():
+    pass
