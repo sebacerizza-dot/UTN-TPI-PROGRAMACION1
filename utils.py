@@ -55,6 +55,12 @@ def lee_archivo(ARCHIVO_CSV):
 
         return datos_limpios
 
+def fabricar_criterio(campo, tipo):
+    # Esta función recibe las variables del menú y devuelve una función nueva
+    def funcion_para_sort(x):
+        return tipo(x[campo]) # Solo recibe 'x', como quiere .sort()
+    return funcion_para_sort
+
 #Opcion 1:
 def agregar_pais(ARCHIVO_CSV):
     try:
@@ -442,8 +448,8 @@ def ordenar_paises(ARCHIVO_CSV):
             # Carga la lista de diccionarios desde el archivo CSV externo
             datos=lee_archivo(ARCHIVO_CSV)
 
-            # Ordena la lista usando una función lambda que convierte el campo al tipo de dato correspondiente
-            datos.sort(key=lambda x: tipo(x[campo]), reverse=orden )
+            # Ordena la lista usando una función que convierte el campo al tipo de dato correspondiente
+            datos.sort(key=fabricar_criterio(campo, tipo), reverse=orden )
 
             # Recorre la lista ya ordenada e imprime los datos de cada país en la consola
             for fila in datos:
@@ -470,7 +476,7 @@ def mostrar_estadisticas(ARCHIVO_CSV):
             datos=lee_archivo(ARCHIVO_CSV) # Carga los datos del archivo
             
             # Ordena los países de mayor a menor población convirtiendo el valor a entero
-            datos.sort(key=lambda x: int(x["poblacion"]), reverse=True )
+            datos.sort(key=fabricar_criterio(campo, tipo), reverse=True )
             
             # El primer elemento de la lista ordenada es el país más poblado
             primer_pais = datos[0]
