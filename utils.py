@@ -316,7 +316,7 @@ Seleccione la opcion que desee utiliza:
             print (f"Error inesperado: {e}")
 
     #opcion 3
-    elif opcion == 2:
+    elif opcion == 3:
         #solicitamos el numero de poblacion minima
         superficie_min = pedir_int ("Ingrese el la cantidad minima de superficie: ")
         #solicitamos el numero de poblacion maxima
