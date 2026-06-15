@@ -5,7 +5,12 @@ TRABAJO PRACTICO INTEGRADOR PROGRAMACION 1 UTN SAN NICOLAS
 *   **Institución:** Universidad Tecnológica Nacional (UTN) - Facultad Regional San Nicolás
 *   **Materia:** Programación I
 *   **Comisión:** C22
-*   **Profesores:** [Falta el nombre del profe]
+*   **Profesores:**
+    *   Cinthia Rigoni
+    *   Martín A. García
+    *   Ariel Enferrel
+*   **Tutores:**
+    *   Neyén Bianchi      
 *   **Integrantes:** 
     *   Sebastian Cerizza
     *   Maximiliano Castillo
@@ -21,7 +26,7 @@ El desarrollo cumple con los lineamientos de modularización requeridos, separan
 El programa se divide en los siguientes componentes:
 
 *   **Script Principal (`main.py`):** Contiene el bucle de control (`while`) que despliega el menú interactivo con las 7 opciones del sistema. Implementa bloques `try-except` globales para capturar ingresos inválidos y asegurar que el programa no finalice de forma inesperada.
-*   **Módulo de Utilidades (`utils.py`):** Concentra la lógica del negocio, incluyendo las funciones de lectura/escritura del CSV, los algoritmos de ordenamiento y filtrado, y las capas de estadísticas.
+*   **Módulo de Utilidades (`utils.py`):** Concentra la lógica del programa, incluyendo las funciones de lectura/escritura del CSV, los algoritmos de ordenamiento y filtrado, y las capas de estadísticas.
 *   **Base de Datos (`paises_del_mundo.csv`):** Almacena los registros estructurados bajo las columnas `nombre`, `poblacion`, `superficie` y `continente`.
 
 ```text
@@ -49,7 +54,7 @@ UTN-TPI-PROGRAMACION1/
 El sistema fue diseñado bajo el principio de programación defensiva para mitigar fallas en tiempo de ejecución:
 
 *   **Validación de Entradas:** Funciones de captura encargadas de rechazar cadenas vacías o espacios redundantes, así como de forzar la entrada de valores numéricos enteros dentro de límites lógicos aceptables.
-*   **Parseo Seguro de Datos:** El lector (`DictReader`) procesa el archivo fila por fila. En caso de detectar valores corruptos o campos de texto donde debería haber números, el bloque `try-except` interno asigna valores seguros por defecto (`0`) en lugar de interrumpir la ejecución[cite: 1].
+*   **Parseo Seguro de Datos:** El lector (`DictReader`) procesa el archivo fila por fila. En caso de detectar valores corruptos o campos de texto donde debería haber números, el bloque `try-except` interno asigna valores seguros por defecto (`0`) en lugar de interrumpir la ejecución.
 *   **Manejo de Excepciones del Entorno:** Control explícito de errores de E/S, tales como la ausencia física del archivo (`FileNotFoundError`) o bloqueos por derechos de escritura (`PermissionError`) comunes cuando el archivo CSV se encuentra abierto en un programa externo como Excel.
 
 ---
