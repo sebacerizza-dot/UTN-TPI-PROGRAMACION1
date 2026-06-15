@@ -215,3 +215,142 @@ def buscar_pais (ARCHIVO_CSV, pais_a_buscar):
     except Exception as e:
         print (f"Error inesperado: {e}")
 
+#opcion 4
+def filtrar_paises (ARCHIVO_CSV):
+    #generamos un sub menu para elgir la opcion que quiera utilizar
+    print ("""\n----- FILTAR PAISES ----- 
+Seleccione la opcion que desee utiliza:
+1) Filtrar por continente.
+2) Filtrar por rango de poblacion.
+3) Filtrar por rango de superficie.
+""")
+    opcion = pedir_int ("Ingrese el numero correspondiente a la opcion deseada (1-3): ")
+    #opcion 1
+    if opcion == 1:
+        try:
+            #Generamos un menu para que elija el continente
+            #para ingresar el continente creamos un menu para asegurar que usen los nombres que deseamos
+            
+            continentes = ["América", "Europa", "Asia", "Oceanía", "África"]
+
+            while True:
+                print("\nSeleccione el continente:")
+                print("1. América")
+                print("2. Europa")
+                print("3. Asia")
+                print("4. Oceanía")
+                print("5. África")
+                #solicitamos el numero de la opcion deseada
+                opcion = pedir_int("\nElija la opcion deseada (1-5): ").strip()
+
+                #Validamos la opcion
+                if opcion in [1, 2, 3, 4, 5]:
+                    #usamos el numero para elegir la opcion deseada
+                    cont = continentes [opcion-1]
+                    break #salimos del bucle
+                #sino damos mensaje de error
+                else:
+                    print ("Valor ingresado invalido. ingrese el numero de acuerdo a la opcion deseada (1-5).")
+            #avisamos que continente de a seleccionado
+            print (f"\nContinente elegido: {cont}")
+            #Abrimos el archivo en modo lectura
+            with open(ARCHIVO_CSV, mode='r', encoding='utf-8') as archivo:
+                lector_dict = csv.DictReader(archivo)
+                #recorremos todo el archivo
+                for fila in lector_dict:
+                    #comparamos el nombre de la fila con el nombre ingresado
+                    if fila ['continente'] == cont:
+                        #imprimimos esa fila
+                        print (f"-Pais: {fila['nombre']}  Poblacion: {fila['poblacion']}  Superficie: {fila['superficie']} km*2")
+                
+            #damos aviso de proceso finalizado
+            print ("\nProceso terminado.\n")
+            #se crea la validacion por si no se encuentra el archivo CSV
+        except FileNotFoundError:
+            print (f"El archivo {ARCHIVO_CSV} no se encuentro en la carpeta")
+        #verificamos que se pueda trabajar con el csv
+        except PermissionError:
+            print ("Error. Asegurese que el CSV no se encuentre abierto por otro programa.")
+        #Para cualquier otro error lo imprimimos por pantalla
+        except Exception as e:
+            print (f"Error inesperado: {e}")
+
+    #opcion 2
+    elif opcion == 2:
+        #solicitamos el numero de poblacion minima
+        poblacion_min = pedir_int ("Ingrese el la cantidad minima de poblacion: ")
+        #solicitamos el numero de poblacion maxima
+        poblacion_max = pedir_int ("Ingrese el la cantidad maxima de poblacion: ")
+        #generamos una bandera
+        dentro_rango = False
+
+        #damos mensaje de filtro
+        print (f"\nPaises filtrados por rango de poblacion ({poblacion_min}-{poblacion_max}).\n")
+        try:
+            #Abrimos el archivo en modo lectura
+            with open(ARCHIVO_CSV, mode='r', encoding='utf-8') as archivo:
+                lector_dict = csv.DictReader(archivo)
+                #recorremos todo el archivo
+                for fila in lector_dict:
+                    #comparamos el valor de la fila con los valores ingresados
+                    if fila ['pobacion'] <= poblacion_max and fila ['pobacion'] >= poblacion_min:
+                        #cambiamos la bandera
+                        dentro_rango = True
+                        #imprimimos los datos
+                        print (f"-Pais: {fila['nombre']}  Poblacion: {fila['poblacion']}  Superficie: {fila['superficie']} km*2  Continente: {fila['continente']}")
+
+            #si no hay ningun pais dentro del rango dado damos mensaje
+            if not dentro_rango:
+                print ("No hay nigun pais dentro del rango especificado.")
+                return False
+            #damos aviso de proceso finalizado
+            print ("\nProceso terminado.\n")
+            #se crea la validacion por si no se encuentra el archivo CSV
+        except FileNotFoundError:
+            print (f"El archivo {ARCHIVO_CSV} no se encuentro en la carpeta")
+        #verificamos que se pueda trabajar con el csv
+        except PermissionError:
+            print ("Error. Asegurese que el CSV no se encuentre abierto por otro programa.")
+        #Para cualquier otro error lo imprimimos por pantalla
+        except Exception as e:
+            print (f"Error inesperado: {e}")
+
+    #opcion 3
+    elif opcion == 2:
+        #solicitamos el numero de poblacion minima
+        superficie_min = pedir_int ("Ingrese el la cantidad minima de superficie: ")
+        #solicitamos el numero de poblacion maxima
+        superficie_max = pedir_int ("Ingrese el la cantidad maxima de superficie: ")
+        #generamos una bandera
+        dentro_rango = False
+
+        #damos mensaje de filtro
+        print (f"\nPaises filtrados por rango de superficie ({superficie_min}-{superficie_max}) Km*2.\n")
+        try:
+            #Abrimos el archivo en modo lectura
+            with open(ARCHIVO_CSV, mode='r', encoding='utf-8') as archivo:
+                lector_dict = csv.DictReader(archivo)
+                #recorremos todo el archivo
+                for fila in lector_dict:
+                    #comparamos el valor de la fila con los valores ingresados
+                    if fila ['pobacion'] <= superficie_max and fila ['pobacion'] >= superficie_min:
+                        #cambiamos la bandera
+                        dentro_rango = True
+                        #imprimimos los datos
+                        print (f"-Pais: {fila['nombre']}  Poblacion: {fila['poblacion']}  Superficie: {fila['superficie']} km*2  Continente: {fila['continente']}")
+
+            #si no hay ningun pais dentro del rango dado damos mensaje
+            if not dentro_rango:
+                print ("No hay nigun pais dentro del rango especificado.")
+                return False
+            #damos aviso de proceso finalizado
+            print ("\nProceso terminado.\n")
+            #se crea la validacion por si no se encuentra el archivo CSV
+        except FileNotFoundError:
+            print (f"El archivo {ARCHIVO_CSV} no se encuentro en la carpeta")
+        #verificamos que se pueda trabajar con el csv
+        except PermissionError:
+            print ("Error. Asegurese que el CSV no se encuentre abierto por otro programa.")
+        #Para cualquier otro error lo imprimimos por pantalla
+        except Exception as e:
+            print (f"Error inesperado: {e}")
