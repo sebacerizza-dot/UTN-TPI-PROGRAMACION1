@@ -476,7 +476,7 @@ def mostrar_estadisticas(ARCHIVO_CSV):
             datos=lee_archivo(ARCHIVO_CSV) # Carga los datos del archivo
             
             # Ordena los países de mayor a menor población convirtiendo el valor a entero
-            datos.sort(key=fabricar_criterio(campo, tipo), reverse=True )
+            datos.sort(key=fabricar_criterio("poblacion", int), reverse=True )
             
             # El primer elemento de la lista ordenada es el país más poblado
             primer_pais = datos[0]
