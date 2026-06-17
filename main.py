@@ -1,7 +1,8 @@
 #Bloque principal
 #importamos las funciones desde el archivo utils
+import os
 from utils import agregar_pais, actualizar_datos, buscar_pais, filtrar_paises, ordenar_paises, mostrar_estadisticas
-ARCHIVO_CSV = "paises_del_mundo.csv"
+ARCHIVO_CSV = os.path.join(os.path.dirname(__file__), "paises_del_mundo.csv")
 #Creamos la variable opcion
 opcion = ""
 #Creamos menu principal con un bucle while para elergir la opcion deseada

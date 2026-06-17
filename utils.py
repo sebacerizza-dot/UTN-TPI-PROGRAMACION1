@@ -2,7 +2,6 @@
 import csv
 import os
 
-ARCHIVO_CSV = "paises_del_mundo.csv"
 CAMPOS = ["nombre", "poblacion", "superficie", "continente"]
 
 #Validacion para ingresar int
@@ -63,78 +62,74 @@ def fabricar_criterio(campo, tipo):
 
 #Opcion 1:
 def agregar_pais(ARCHIVO_CSV):
+    print (ARCHIVO_CSV)
     try:
+        #abrimos el archivo csv en modo lectura   
+        lector_dict=lee_archivo(ARCHIVO_CSV)
         #solicitamos el pais a agregar
         print ("\n----- AGREGAR PAIS -----\n")
         pais_a_agregar = pedir_texto("Ingrese el nombre del pais a agregar: ")
         #lo pasamos a minusculas y eliminamos cualquier espacio o indentacion que haya quedado
         nuevo_pais = pais_a_agregar.lower().strip()
-        #verificamos que exista el archivo csv
-        if os.path.exists(ARCHIVO_CSV):
-            #abrimos el archivo csv en modo lectura
-            # with open(ARCHIVO_CSV, mode='r', encoding='utf-8') as archivo:
-            #     #leemos el archivo como un diccionario para poder utilizar el encabezado
-            #     lector_dict = csv.DictReader(archivo)
-            lector_dict=lee_archivo(ARCHIVO_CSV)
-            for fila in lector_dict:
-            # Comparamos directamente usando el nombre de la columna
-                if fila['nombre'].lower().strip() == nuevo_pais:
-                    print(f"El país '{nuevo_pais.title()}' ya existe en el archivo. Operación cancelada.")
-                    return False
-    
-            # Si no existe, pide la informacion para agregarlo
-            print (f"{pais_a_agregar} no se encuentra registrado. ingrese los siguientes datos:")
-            pob = pedir_int ("Ingrese la cantidad de habitantes: ")
-            sup = pedir_int ("Ingrese la superficie en Km*2: ")
-            #para ingresar el continente creamos un menu para asegurar que usen los nombres que deseamos
+        for fila in lector_dict:
+        # Comparamos directamente usando el nombre de la columna
+            if fila['nombre'].lower().strip() == nuevo_pais:
+                print(f"El país '{nuevo_pais.title()}' ya existe en el archivo. Operación cancelada.")
+                return False
+
+        # Si no existe, pide la informacion para agregarlo
+        print (f"{pais_a_agregar} no se encuentra registrado. ingrese los siguientes datos:")
+        pob = pedir_int ("Ingrese la cantidad de habitantes: ")
+        sup = pedir_int ("Ingrese la superficie en Km*2: ")
+        #para ingresar el continente creamos un menu para asegurar que usen los nombres que deseamos
+        
+        continentes = ["América", "Europa", "Asia", "Oceanía", "África"]
+
+        while True:
+            print("\nSeleccione el continente:")
+            print("1. América")
+            print("2. Europa")
+            print("3. Asia")
+            print("4. Oceanía")
+            print("5. África")
+            #solicitamos el numero de la opcion deseada
+            opcion = pedir_int("\nElija la opcion deseada (1-5): ")
+
+            #Validamos la opcion
+            if opcion in [1, 2, 3, 4, 5]:
+                #usamos el numero para elegir la opcion deseada
+                cont = continentes [opcion-1]
+                break #salimos del bucle
+            #sino damos mensaje de error
+            else:
+                print ("Valor ingresado invalido. ingrese el numero de acuerdo a la opcion deseada (1-5).")
+
+        #armamos el dicionario con los datos ingresados
+        
+        nuevo_pais_dict = {'nombre': nuevo_pais.title(), 'poblacion': pob, 'superficie': sup, 'continente': cont}
+
+        # Si el archivo es nuevo, escribirá las cabeceras primero
+        archivo_existe = os.path.exists(ARCHIVO_CSV)
+        
+        with open(ARCHIVO_CSV, mode='a', newline='', encoding='utf-8') as archivo:
+            # Definimos el orden exacto de las columnas de tu CSV
+            colmunas = ['nombre', 'poblacion', 'superficie', 'continente']
+            escritor_dict = csv.DictWriter( archivo, fieldnames=colmunas)
             
-            continentes = ["América", "Europa", "Asia", "Oceanía", "África"]
-
-            while True:
-                print("\nSeleccione el continente:")
-                print("1. América")
-                print("2. Europa")
-                print("3. Asia")
-                print("4. Oceanía")
-                print("5. África")
-                #solicitamos el numero de la opcion deseada
-                opcion = pedir_int("\nElija la opcion deseada (1-5): ")
-
-                #Validamos la opcion
-                if opcion in [1, 2, 3, 4, 5]:
-                    #usamos el numero para elegir la opcion deseada
-                    cont = continentes [opcion-1]
-                    break #salimos del bucle
-                #sino damos mensaje de error
-                else:
-                    print ("Valor ingresado invalido. ingrese el numero de acuerdo a la opcion deseada (1-5).")
-
-            #armamos el dicionario con los datos ingresados
-            
-            nuevo_pais_dict = {'nombre': nuevo_pais.title(), 'poblacion': pob, 'superficie': sup, 'continente': cont}
-
-            # Si el archivo es nuevo, escribirá las cabeceras primero
-            archivo_existe = os.path.exists(ARCHIVO_CSV)
-            
-            with open(ARCHIVO_CSV, mode='a', newline='', encoding='utf-8') as archivo:
-                # Definimos el orden exacto de las columnas de tu CSV
-                colmunas = ['nombre', 'poblacion', 'superficie', 'continente']
-                escritor_dict = csv.DictWriter( archivo, fieldnames=colmunas)
+            # Si el archivo se está creando de cero, escribimos los nombres de las columnas
+            if not archivo_existe:
+                escritor_dict.writeheader()
                 
-                # Si el archivo se está creando de cero, escribimos los nombres de las columnas
-                if not archivo_existe:
-                    escritor_dict.writeheader()
-                    
-                # Escribimos el diccionario completo como una nueva fila
-                escritor_dict.writerow(nuevo_pais_dict)
-                print(f"¡{nuevo_pais.title()}! agregado con éxito al CSV.")
-                return True
+            # Escribimos el diccionario completo como una nueva fila
+            escritor_dict.writerow(nuevo_pais_dict)
+            print(f"¡{nuevo_pais.title()}! agregado con éxito al CSV.")
+            return True
     #Si bien ya estan validadas las funciones donde se ingresan los datos. Se deja el except para mostrar como se usa
     except ValueError:
         print ("Error. ingrese un numero entero")
     #se crea la validacion por si no se encuentra el archivo CSV
     except FileNotFoundError:
-        print (f"El archivo {ARCHIVO_CSV} no se encuentro en la carpeta")
+        print (f"El archivo {ARCHIVO_CSV} no se encuentra en la carpeta.")
     #verificamos que se pueda trabajar con el csv
     except PermissionError:
         print ("Error. Asegurese que el CSV no se encuentre abierto por otro programa.")
@@ -146,6 +141,8 @@ def agregar_pais(ARCHIVO_CSV):
 def actualizar_datos(ARCHIVO_CSV):
 
     try:
+        #Abrimos el archivo en modo lectura
+        lector_dict=lee_archivo(ARCHIVO_CSV)
         print("\n----- MODIFICAR PAIS ----- \n")
         #solicitamos el nombre del pais a buscar
         pais_a_buscar = pedir_texto ("Ingrese el nombre del pais que desea actualizar los datos: ").strip().lower()
@@ -155,11 +152,6 @@ def actualizar_datos(ARCHIVO_CSV):
         columnas = ['nombre', 'poblacion', 'superficie', 'continente']
         #creamo una bandera para saber si encontramos el pais
         encontrado = False
-        
-        #Abrimos el archivo en modo lectura
-        # with open(ARCHIVO_CSV, mode='r', encoding='utf-8') as archivo:
-        #     lector_dict = csv.DictReader(archivo)
-        lector_dict=lee_archivo(ARCHIVO_CSV)
         #recorremos todo el archivo
         for fila in lector_dict:
             #comparamos el nombre de la fila con el nombre ingresado
@@ -205,7 +197,7 @@ def actualizar_datos(ARCHIVO_CSV):
         print ("Error. ingrese un numero entero")
     #se crea la validacion por si no se encuentra el archivo CSV
     except FileNotFoundError:
-        print (f"El archivo {ARCHIVO_CSV} no se encuentro en la carpeta")
+        print (f"El archivo {ARCHIVO_CSV} no se encuentra en la carpeta.")
     #verificamos que se pueda trabajar con el csv
     except PermissionError:
         print ("Error. Asegurese que el CSV no se encuentre abierto por otro programa.")
@@ -223,8 +215,6 @@ def buscar_pais (ARCHIVO_CSV):
         encontrado = False
         
         #Abrimos el archivo en modo lectura
-        # with open(ARCHIVO_CSV, mode='r', encoding='utf-8') as archivo:
-        #     lector_dict = csv.DictReader(archivo)
         lector_dict=lee_archivo(ARCHIVO_CSV)
             #recorremos todo el archivo
         for fila in lector_dict:
@@ -244,7 +234,7 @@ def buscar_pais (ARCHIVO_CSV):
         
     #se crea la validacion por si no se encuentra el archivo CSV
     except FileNotFoundError:
-        print (f"El archivo {ARCHIVO_CSV} no se encuentro en la carpeta")
+        print (f"El archivo {ARCHIVO_CSV} no se encuentra en la carpeta.")
     #verificamos que se pueda trabajar con el csv
     except PermissionError:
         print ("Error. Asegurese que el CSV no se encuentre abierto por otro programa.")
@@ -291,8 +281,6 @@ Seleccione la opcion que desee utiliza:
             #avisamos que continente de a seleccionado
             print (f"\nContinente elegido: {cont}")
             #Abrimos el archivo en modo lectura
-            # with open(ARCHIVO_CSV, mode='r', encoding='utf-8') as archivo:
-            #     lector_dict = csv.DictReader(archivo)
             lector_dict=lee_archivo(ARCHIVO_CSV)
             #recorremos todo el archivo
             for fila in lector_dict:
@@ -326,8 +314,6 @@ Seleccione la opcion que desee utiliza:
         print (f"\nPaises filtrados por rango de poblacion ({poblacion_min}-{poblacion_max}).\n")
         try:
             #Abrimos el archivo en modo lectura
-            # with open(ARCHIVO_CSV, mode='r', encoding='utf-8') as archivo:
-            #     lector_dict = csv.DictReader(archivo)
             lector_dict=lee_archivo(ARCHIVO_CSV)
             #recorremos todo el archivo
             for fila in lector_dict:
@@ -368,8 +354,6 @@ Seleccione la opcion que desee utiliza:
         print (f"\nPaises filtrados por rango de superficie ({superficie_min}-{superficie_max}) Km*2.\n")
         try:
             #Abrimos el archivo en modo lectura
-            # with open(ARCHIVO_CSV, mode='r', encoding='utf-8') as archivo:
-            #     lector_dict = csv.DictReader(archivo)
             lector_dict=lee_archivo(ARCHIVO_CSV)
             #recorremos todo el archivo
             for fila in lector_dict:
