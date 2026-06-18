@@ -62,7 +62,6 @@ def fabricar_criterio(campo, tipo):
 
 #Opcion 1:
 def agregar_pais(ARCHIVO_CSV):
-    print (ARCHIVO_CSV)
     try:
         #abrimos el archivo csv en modo lectura   
         lector_dict=lee_archivo(ARCHIVO_CSV)
