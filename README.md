@@ -15,6 +15,9 @@ TRABAJO PRACTICO INTEGRADOR PROGRAMACION 1 UTN SAN NICOLAS
     *   Sebastian Cerizza
     *   Maximiliano Castillo
 
+*   **Video:** 
+https://youtu.be/zDyY6cwO5E0
+
 Este proyecto consiste en una aplicación de consola desarrollada en Python para la administración, filtrado y análisis estadístico de un registro global de países. El sistema implementa persistencia de datos local mediante un archivo de texto plano en formato CSV (`paises_del_mundo.csv`).
 
 El desarrollo cumple con los lineamientos de modularización requeridos, separando la interfaz de interacción con el usuario de la lógica interna de procesamiento y validación de archivos.
